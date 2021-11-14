@@ -31,6 +31,7 @@ import threading
 from App import controller
 from DISClib.ADT import stack
 assert config
+from timeit import default_timer
 
 """
 La vista se encarga de la interacción con el usuario.
@@ -44,7 +45,7 @@ operación seleccionada.
 # ___________________________________________________
 
 
-servicefile = 'bus_routes_14000.csv'
+servicefile = 'bus_routes_50.csv'
 initialStation = None
 
 # ___________________________________________________
@@ -94,6 +95,7 @@ def optionFive(cont, destStation):
 
 
 def optionSix(cont, destStation):
+    inicio = default_timer()
     path = controller.minimumCostPath(cont, destStation)
     if path is not None:
         pathlen = stack.size(path)
@@ -103,6 +105,9 @@ def optionSix(cont, destStation):
             print(stop)
     else:
         print('No hay camino')
+
+    fin = default_timer()
+    print("Tiempo de ejecución: " + str(fin -  inicio))   
 
 
 def optionSeven(cont):
@@ -135,7 +140,10 @@ def thread_cycle():
         elif int(inputs[0]) == 4:
             msg = "Estación Base: BusStopCode-ServiceNo (Ej: 75009-10): "
             initialStation = input(msg)
+            inicio = default_timer()
             optionFour(cont, initialStation)
+            fin = default_timer()
+            print("Tiempo de ejecución: " + str(fin -  inicio))
 
         elif int(inputs[0]) == 5:
             destStation = input("Estación destino (Ej: 15151-10): ")
